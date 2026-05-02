@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Environment Variables
+.env
+.env.local
+.env.production
+.env.test
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# WhatsApp session data (VERY IMPORTANT to ignore this)
+auth_info_baileys/
+auth/
+
+# IDE files
+.vscode/
+.idea/
+.DS_Store
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Prisma
+/prisma/migrations/

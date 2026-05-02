@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Business {
+  id            String         @id @default(cuid())
+  name          String
+  userId        String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now())
+  aiSettings    AISettings?
+  audit_logs    AuditLog[]
+  conversations Conversation[]
+  faqs          FAQ[]
+
+  @@map("businesses")
+}
+
+model Conversation {
+  id            String    @id @default(cuid())
+  customerPhone String
+  businessId    String
+  status        String    @default("BOT_ACTIVE")
+  lastMessageAt DateTime  @default(now())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now())
+  business      Business  @relation(fields: [businessId], references: [id])
+  messages      Message[]
+
+  @@unique([customerPhone, businessId])
+  @@map("conversations")
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  content        String
+  direction      String
+  contentType    String       @default("TEXT")
+  metadata       Json?
+  createdAt      DateTime     @default(now())
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+
+  @@map("messages")
+}
+
+model FAQ {
+  id         String   @id @default(cuid())
+  businessId String
+  question   String
+  answer     String
+  keywords   String[]
+  isActive   Boolean  @default(true)
+  usageCount Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+  business   Business @relation(fields: [businessId], references: [id])
+
+  @@map("faqs")
+}
+
+model AISettings {
+  id              String   @id @default(cuid())
+  businessId      String   @unique
+  provider        String   @default("GROQ")
+  model           String   @default("llama3-8b-8192")
+  systemPrompt    String
+  temperature     Float    @default(0.7)
+  maxTokens       Int      @default(500)
+  handoffKeywords String[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now())
+  business        Business @relation(fields: [businessId], references: [id])
+
+  @@map("ai_settings")
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  businessId String
+  action     String
+  details    Json?
+  createdAt  DateTime @default(now())
+  businesses Business @relation(fields: [businessId], references: [id])
+
+  @@map("audit_logs")
+}
+
+enum ConversationStatus {
+  BOT_ACTIVE
+  BOT_PAUSED
+  HUMAN_TAKEOVER
+  RESOLVED
+}
+
+enum Direction {
+  INBOUND
+  OUTBOUND
+}
+
+enum ContentType {
+  TEXT
+  IMAGE
+  AUDIO
+  VIDEO
+  DOCUMENT
+}
