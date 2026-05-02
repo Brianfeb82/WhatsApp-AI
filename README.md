@@ -1,85 +1,82 @@
-# 🤖 WhatsApp AI Automation (Portfolio Edition)
+# WhatsApp AI Automation
 
-> **A production-ready WhatsApp AI Bot for Indonesian Small Businesses (UMKM).**
-> Built with Node.js, Next.js, Groq LLM (Llama 3.1), and Supabase.
-
----
-
-## 🌟 Key Features
-
-- **🧠 Smart AI Responses**: Powered by **Groq (Llama 3.1)** for near-instant replies in natural Indonesian.
-- **📚 Knowledge Base (RAG-Lite)**: Automatically retrieves business-specific FAQs from Supabase to provide accurate info.
-- **👨‍💼 Human Handoff**: Detects when a customer needs a real human and pauses the bot.
-- **🔄 Multi-Business Support**: Built-in multi-tenancy to support multiple businesses on one platform.
-- **📊 Real-time Monitoring**: Detailed logging for conversation tracking and AI performance.
+Professional WhatsApp AI assistant designed for customer service automation. Built with a modern service-oriented architecture using Node.js, Next.js, Groq LLM, and Supabase.
 
 ---
 
-## 🏗️ Technical Architecture
+## Key Features
 
-This isn't just a simple bot. It uses a professional **Service-Oriented Architecture**:
-
-1.  **Incoming Message**: Captured via **Baileys** (WebSocket).
-2.  **Intent Detection**: Simple logic to detect keywords and handoff requests.
-3.  **Context Retrieval**: Queries **PostgreSQL (Supabase)** via **Prisma** to find relevant business data.
-4.  **AI Pipeline**: Combines system prompts + context + conversation history for the Groq API.
-5.  **Database Persistence**: Every message and conversation state is saved for the dashboard.
+- **Smart AI Responses**: Integrated with Groq (Llama 3.1) for high-performance natural language processing.
+- **Knowledge Base (RAG-Lite)**: Automated retrieval of business-specific data from PostgreSQL to provide accurate context-aware responses.
+- **Human Handoff Detection**: Intelligent intent detection to pause AI responses when human intervention is required.
+- **Multi-Tenant Architecture**: Support for multiple business profiles within a single database instance.
+- **Persistent Logging**: Comprehensive audit logs for conversation tracking and performance monitoring.
 
 ---
 
-## 🛠️ Tech Stack
+## Technical Architecture
+
+The system implements a robust processing pipeline:
+
+1.  **Ingress**: Message capture via Baileys WebSocket implementation.
+2.  **Intent Detection**: Analysis of inbound messages for specific triggers and handoff requests.
+3.  **Context Retrieval**: Querying business logic and FAQs via Prisma ORM from Supabase.
+4.  **AI Pipeline**: Dynamic prompt construction combining system instructions, retrieved context, and conversation history.
+5.  **Persistence**: State management for all conversations and messages in PostgreSQL.
+
+---
+
+## Tech Stack
 
 | Layer | Technology |
 |---|---|
 | **Core** | Node.js, TypeScript, Express |
-| **Frontend** | Next.js 14, TailwindCSS (for Dashboard) |
+| **Frontend** | Next.js 14, TailwindCSS |
 | **Database** | PostgreSQL (Supabase), Prisma ORM |
 | **AI Engine** | Groq SDK (Llama 3.1 8B / 70B) |
-| **WhatsApp** | Baileys (Multi-device API) |
-| **DevOps** | Monorepo structure, Git-safe environment |
+| **WhatsApp API** | Baileys |
 
 ---
 
-## 🚀 Setup & Installation
+## Setup and Installation
 
 ### 1. Prerequisites
 - Node.js (v18+)
 - Supabase account (Postgres)
-- Groq API Key (Free at [console.groq.com](https://console.groq.com))
+- Groq API Key
 
-### 2. Environment Setup
-Copy `.env.example` to `.env` and fill in your keys:
+### 2. Environment Configuration
+Copy `.env.example` to `.env` and configure your credentials:
 ```bash
 DATABASE_URL="postgresql://postgres.xxx:password@xxx.pooler.supabase.com:6543/postgres?pgbouncer=true"
 GROQ_API_KEY="gsk_xxx"
 ```
 
-### 3. Installation
+### 3. Deployment
 ```bash
 npm install
 npx prisma generate --schema apps/api/prisma/schema.prisma
 ```
 
-### 4. Run Development
+### 4. Development Mode
 ```bash
 npm run dev --workspace=@wa-automation/api
 ```
 
 ---
 
-## 💡 What I Solved (Technical Highlights)
+## Technical Highlights
 
-- **Database Synchronization**: Successfully introspected and synchronized a Prisma schema with a live Supabase instance using Direct and Pooler connection ports.
-- **State Management**: Implemented conversation status tracking (`BOT_ACTIVE`, `HUMAN_TAKEOVER`) to ensure seamless transitions.
-- **Robust AI Pipeline**: Built a resilient pipeline that handles API timeouts and fallback gracefully.
-- **Indonesian Localization**: Engineered prompts specifically for high-quality natural Indonesian customer service.
-
----
-
-## 👤 Author
-**[Your Name/GitHub Username]**
-- Portfolio: [Your Website]
-- LinkedIn: [Your Profile]
+- **Database Synchronization**: Synchronized Prisma schema with a production Supabase instance using connection pooling and direct connection protocols.
+- **State Management**: Implemented conversation flow control with defined states (BOT_ACTIVE, HUMAN_TAKEOVER).
+- **AI Pipeline Resilience**: Built a fault-tolerant pipeline with graceful degradation and error handling.
+- **Indonesian Localization**: Specialized prompt engineering for high-quality natural language output in Bahasa Indonesia.
 
 ---
-*Created as a technical demonstration for AI-driven customer automation.*
+
+## Author
+**Brianfeb82**
+- GitHub: [github.com/Brianfeb82](https://github.com/Brianfeb82)
+
+---
+*Technical demonstration for AI-driven enterprise automation.*
