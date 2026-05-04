@@ -1,3 +1,7 @@
+
+
+https://github.com/user-attachments/assets/675a432a-d1a1-4f5e-b681-a8261fc50be8
+
 # WhatsApp AI Automation
 
 Professional WhatsApp AI assistant designed for customer service automation. Built with a modern service-oriented architecture using Node.js, Next.js, Groq LLM, and Supabase.
