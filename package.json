@@ -5,12 +5,27 @@
   "main": "index.js",
   "scripts": {
     "dev": "npm run dev --workspaces",
-    "start": "npm start --workspaces"
+    "build": "npm run build --workspaces --if-present",
+    "start": "npm start --workspaces",
+    "test": "npm run test --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "prisma:generate": "prisma generate --schema apps/api/prisma/schema.prisma",
+    "seed": "prisma db seed --schema apps/api/prisma/schema.prisma"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "whatsapp",
+    "ai",
+    "automation",
+    "customer-service",
+    "groq",
+    "baileys"
+  ],
+  "author": "Brianfeb82",
+  "license": "MIT",
   "type": "commonjs",
+  "prisma": {
+    "seed": "ts-node apps/api/prisma/seed.ts"
+  },
   "workspaces": [
     "apps/*",
     "packages/*"

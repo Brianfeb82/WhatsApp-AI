@@ -13,10 +13,13 @@ dist/
 build/
 .next/
 out/
+*.tsbuildinfo
 
 # WhatsApp session data (VERY IMPORTANT to ignore this)
 auth_info_baileys/
 auth/
+.wa-auth/
+**/.wa-auth/
 
 # IDE files
 .vscode/
@@ -29,6 +32,3 @@ logs/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# Prisma
-/prisma/migrations/

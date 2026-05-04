@@ -2,9 +2,9 @@ export type Intent = 'FAQ' | 'ORDER' | 'COMPLAINT' | 'GREETING' | 'UNKNOWN'
 
 const INTENT_PATTERNS: Record<Intent, RegExp[]> = {
   GREETING:  [/^(halo|hi|hey|selamat|assalam|pagi|siang|sore|malam)/i],
+  COMPLAINT: [/(komplain|masalah|rusak|salah|kecewa|marah|kesal|tidak puas|ga puas)/i],
   FAQ:       [/(jam|buka|tutup|harga|menu|lokasi|alamat|nomor|berapa|apa|gimana|bagaimana)/i],
   ORDER:     [/(pesan|order|beli|mau|minta|booking|reservasi)/i],
-  COMPLAINT: [/(komplain|masalah|rusak|salah|kecewa|marah|kesal|tidak puas|ga puas)/i],
   UNKNOWN:   []
 }
 

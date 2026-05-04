@@ -1,41 +1,48 @@
 # Development Roadmap
 
-## Week 1 — Foundation
-- Monorepo setup with pnpm, TypeScript, ESLint
-- Prisma schema + Supabase connection
+## Week 1 - Foundation
+
+- Monorepo setup with npm workspaces, TypeScript, and shared config
+- Prisma schema plus Supabase/PostgreSQL connection
 - Basic Express server with health endpoint
-- Logger setup (winston)
-- .env.example and validation
+- Logger setup with Winston
+- `.env.example` and environment validation
 
-## Week 2 — WhatsApp
-- Baileys integration, QR scan, message receive
-- Message stored in DB
-- Basic echo bot (reply with the same message)
-- Confirm the full loop works end-to-end
+## Week 2 - WhatsApp
 
-## Week 3 — AI Pipeline
+- Baileys integration with QR scan
+- Message receive flow
+- Incoming message persistence
+- Basic echo or diagnostic reply
+- Confirm the full loop works end to end
+
+## Week 3 - AI Pipeline
+
 - Groq provider integration
-- Intent detector (keyword-based)
-- Knowledge retriever (keyword scoring)
-- Full pipeline: message → intent → context → Groq → reply
+- Intent detector
+- Knowledge retriever with keyword scoring
+- Full pipeline: message -> intent -> context -> Groq -> reply
 - Test with real WhatsApp messages
 
-## Week 4 — Handoff + Admin API
-- Handoff detector and HUMAN_TAKEOVER state
-- REST API endpoints (conversations, FAQ CRUD)
-- Clerk auth middleware on admin routes
-- Postman/Thunder Client collection for all endpoints
+## Week 4 - Handoff + Admin API
 
-## Week 5 — Dashboard
-- Next.js + Clerk setup
+- Handoff detector and `HUMAN_TAKEOVER` state
+- REST API endpoints for conversations and FAQ CRUD
+- Clerk auth middleware on admin routes
+- Postman or Thunder Client collection for endpoints
+
+## Week 5 - Dashboard
+
+- Next.js plus Clerk setup
 - Conversation list page with status filters
 - Conversation detail with message thread
-- FAQ manager (create, edit, delete, toggle)
+- FAQ manager to create, edit, delete, and toggle entries
 - AI on/off toggle per business
 
-## Week 6 — Polish + Deploy
-- Analytics page (message count, handoff rate, top FAQs)
-- Deploy API to Railway, web to Vercel
+## Week 6 - Polish + Deploy
+
+- Analytics page for message count, handoff rate, and top FAQs
+- Deploy API to Railway and web to Vercel
 - Seed script with demo data
-- Write full README and docs
-- Record a demo video
+- Full README and docs
+- Demo video or GIF

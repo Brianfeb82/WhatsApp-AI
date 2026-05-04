@@ -4,83 +4,133 @@ https://github.com/user-attachments/assets/675a432a-d1a1-4f5e-b681-a8261fc50be8
 
 # WhatsApp AI Automation
 
-Professional WhatsApp AI assistant designed for customer service automation. Built with a modern service-oriented architecture using Node.js, Next.js, Groq LLM, and Supabase.
+WhatsApp AI Automation is a portfolio-grade customer service assistant for WhatsApp. It combines a Baileys WhatsApp client, an Express API, a Prisma/PostgreSQL data layer, Groq LLM responses, and a Next.js dashboard shell.
 
----
+> Status: active MVP. The backend message loop, AI pipeline, Prisma schema, seed data, and dashboard foundation are implemented. Some admin dashboard features are still planned.
 
-## Key Features
+## Features
 
-- **Smart AI Responses**: Integrated with Groq (Llama 3.1) for high-performance natural language processing.
-- **Knowledge Base (RAG-Lite)**: Automated retrieval of business-specific data from PostgreSQL to provide accurate context-aware responses.
-- **Human Handoff Detection**: Intelligent intent detection to pause AI responses when human intervention is required.
-- **Multi-Tenant Architecture**: Support for multiple business profiles within a single database instance.
-- **Persistent Logging**: Comprehensive audit logs for conversation tracking and performance monitoring.
-
----
-
-## Technical Architecture
-
-The system implements a robust processing pipeline:
-
-1.  **Ingress**: Message capture via Baileys WebSocket implementation.
-2.  **Intent Detection**: Analysis of inbound messages for specific triggers and handoff requests.
-3.  **Context Retrieval**: Querying business logic and FAQs via Prisma ORM from Supabase.
-4.  **AI Pipeline**: Dynamic prompt construction combining system instructions, retrieved context, and conversation history.
-5.  **Persistence**: State management for all conversations and messages in PostgreSQL.
-
----
+- WhatsApp message ingestion with Baileys QR login
+- AI responses through Groq Llama models
+- RAG-lite FAQ retrieval from PostgreSQL
+- Human handoff detection with configurable keywords
+- Conversation and message persistence with Prisma
+- Multi-business data model foundation
+- Next.js dashboard foundation with Clerk authentication
 
 ## Tech Stack
 
 | Layer | Technology |
-|---|---|
-| **Core** | Node.js, TypeScript, Express |
-| **Frontend** | Next.js 14, TailwindCSS |
-| **Database** | PostgreSQL (Supabase), Prisma ORM |
-| **AI Engine** | Groq SDK (Llama 3.1 8B / 70B) |
-| **WhatsApp API** | Baileys |
+| --- | --- |
+| API | Node.js, Express, TypeScript |
+| WhatsApp | Baileys |
+| AI | Groq SDK, Llama 3.1 |
+| Database | PostgreSQL, Supabase, Prisma |
+| Web | Next.js 14, Tailwind CSS, Clerk |
+| Quality | Node test runner, TypeScript, GitHub Actions |
 
----
+## Repository Structure
 
-## Setup and Installation
-
-### 1. Prerequisites
-- Node.js (v18+)
-- Supabase account (Postgres)
-- Groq API Key
-
-### 2. Environment Configuration
-Copy `.env.example` to `.env` and configure your credentials:
-```bash
-DATABASE_URL="postgresql://postgres.xxx:password@xxx.pooler.supabase.com:6543/postgres?pgbouncer=true"
-GROQ_API_KEY="gsk_xxx"
+```text
+apps/
+  api/        Express API, WhatsApp client, AI pipeline, Prisma schema
+  web/        Next.js dashboard
+packages/
+  shared-types/
+docs/         Architecture notes, roadmap, interview explanations
 ```
 
-### 3. Deployment
+## Prerequisites
+
+- Node.js 18 or newer
+- PostgreSQL database, local or Supabase
+- Groq API key
+- WhatsApp account for QR pairing
+
+## Quick Start
+
+1. Install dependencies:
+
 ```bash
 npm install
-npx prisma generate --schema apps/api/prisma/schema.prisma
 ```
 
-### 4. Development Mode
+2. Copy environment variables:
+
+```bash
+cp .env.example .env
+```
+
+3. Fill the required values:
+
+```bash
+DATABASE_URL="postgresql://postgres:password@localhost:5432/whatsapp_ai"
+GROQ_API_KEY="your_groq_key_here"
+```
+
+4. Generate Prisma Client:
+
+```bash
+npm run prisma:generate
+```
+
+5. Apply your database schema and seed demo data:
+
+```bash
+npm run seed
+```
+
+6. Start the API:
+
 ```bash
 npm run dev --workspace=@wa-automation/api
 ```
 
----
+7. Scan the QR code shown in the terminal to connect WhatsApp.
 
-## Technical Highlights
+8. Start the web dashboard in another terminal:
 
-- **Database Synchronization**: Synchronized Prisma schema with a production Supabase instance using connection pooling and direct connection protocols.
-- **State Management**: Implemented conversation flow control with defined states (BOT_ACTIVE, HUMAN_TAKEOVER).
-- **AI Pipeline Resilience**: Built a fault-tolerant pipeline with graceful degradation and error handling.
-- **Indonesian Localization**: Specialized prompt engineering for high-quality natural language output in Bahasa Indonesia.
+```bash
+npm run dev --workspace=@wa-automation/web
+```
 
----
+## Demo Data
 
-## Author
-**Brianfeb82**
-- GitHub: [github.com/Brianfeb82](https://github.com/Brianfeb82)
+The seed script creates:
 
----
-*Technical demonstration for AI-driven enterprise automation.*
+- A default demo business with ID `default`
+- AI settings for Groq
+- FAQ examples for opening hours, location, and menu recommendations
+- A sample conversation with inbound and outbound messages
+
+This matches the current API code path, which uses `businessId = "default"` for incoming WhatsApp messages.
+
+## Useful Commands
+
+```bash
+npm run typecheck
+npm test
+npm run build
+npm run prisma:generate
+npm run seed
+```
+
+## Security Notes
+
+Do not commit `.env`, WhatsApp session folders, QR screenshots, phone numbers, or real customer conversations.
+
+Baileys stores WhatsApp credentials locally. This repo ignores `.wa-auth/`, `auth/`, and `auth_info_baileys/`. If a session file was committed before, remove it from Git tracking and reconnect WhatsApp to generate a fresh session.
+
+## Roadmap
+
+- Admin API endpoints for conversation and FAQ management
+- Dashboard integration with live API data
+- FAQ CRUD UI
+- Analytics for message volume, handoff rate, and FAQ usage
+- Queue-based message processing for production workloads
+- Optional pgvector retrieval for larger knowledge bases
+- Deployment guide for Railway, Vercel, and Supabase
+
+## License
+
+MIT

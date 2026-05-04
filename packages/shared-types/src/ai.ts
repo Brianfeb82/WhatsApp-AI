@@ -1,6 +1,6 @@
 export type Role = 'system' | 'user' | 'assistant';
 
-export interface Message {
+export interface ChatMessage {
   role: Role;
   content: string;
 }
@@ -9,7 +9,7 @@ export interface GenerateInput {
   model?: string;
   temperature?: number;
   maxTokens?: number;
-  messages: Message[];
+  messages: ChatMessage[];
 }
 
 export interface AIProvider {

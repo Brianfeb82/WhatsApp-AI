@@ -16,7 +16,6 @@ export class MessageProcessor {
     try {
       logger.info('Processing message', { from, text: text.slice(0, 50) })
 
-      // Find or create conversation
       const conversation = await this.db.conversation.upsert({
         where: { customerPhone_businessId: { customerPhone: from, businessId: 'default' } },
         create: {
@@ -29,7 +28,6 @@ export class MessageProcessor {
         include: { business: { include: { aiSettings: true } } }
       })
 
-      // Save incoming message
       await this.db.message.create({
         data: {
           conversationId: conversation.id,
@@ -38,16 +36,11 @@ export class MessageProcessor {
         }
       })
 
-      // If human has taken over, don't reply
       if (conversation.status === 'HUMAN_TAKEOVER') {
-        logger.debug('Skipping AI reply — human takeover active')
+        logger.debug('Skipping AI reply: human takeover active')
         return
       }
 
-      // If AI is disabled for this business, don't reply
-      // (Business model no longer has aiEnabled, skip this check)
-
-      // Get recent history for context
       const history = await this.db.message.findMany({
         where: { conversationId: conversation.id },
         orderBy: { createdAt: 'desc' },
@@ -56,14 +49,13 @@ export class MessageProcessor {
 
       const settings = conversation.business.aiSettings ?? this.defaultSettings()
 
-      // Run through AI pipeline
       const result = await this.pipeline.process({
         businessId: conversation.businessId,
         customerPhone: from,
         message: text,
-        history: history.reverse().map((m: any) => ({
-          role: m.direction === 'INBOUND' ? 'user' : 'assistant',
-          content: m.content
+        history: history.reverse().map((message) => ({
+          role: message.direction === 'INBOUND' ? 'user' : 'assistant',
+          content: message.content
         })),
         settings
       })
@@ -73,7 +65,7 @@ export class MessageProcessor {
           where: { id: conversation.id },
           data: { status: 'HUMAN_TAKEOVER', updatedAt: new Date() }
         })
-        await this.sendReply(from, '👨‍💼 Saya sambungkan ke tim kami ya. Mohon tunggu sebentar!')
+        await this.sendReply(from, 'Saya sambungkan ke tim kami ya. Mohon tunggu sebentar!')
         return
       }
 
@@ -88,7 +80,11 @@ export class MessageProcessor {
         })
       }
     } catch (error) {
-      logger.error('Error in MessageProcessor', { error: error instanceof Error ? error.message : error, from, text })
+      logger.error('Error in MessageProcessor', {
+        error: error instanceof Error ? error.message : error,
+        from,
+        text
+      })
     }
   }
 
